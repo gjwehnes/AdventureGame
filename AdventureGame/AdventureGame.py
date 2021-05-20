@@ -1,9 +1,7 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import simpledialog
 import GameObject
-
-DUMMY_OBJECT = 0
-NUMBER_OF_OBJECTS = 1
 
 command_widget = None
 image_label = None
@@ -21,10 +19,9 @@ refresh_objects_visible = True
 current_location = 1
 end_of_game = False
 
+generic_object = GameObject.GameObject("object", 1, True, True, False, "description")
 
-dummy_object = GameObject.GameObject("object", 1, True, True, False, "description")
-
-game_objects = [dummy_object]
+game_objects = [generic_object]
 
 def perform_command(verb, noun):
     
@@ -46,8 +43,6 @@ def perform_command(verb, noun):
         perform_read_command(noun)        
     elif (verb == "OPEN"):
         perform_open_command(noun)
-    elif (verb == 'STATE'):
-        set_current_state()
     else:
         print_to_description("huh?")       
         
@@ -79,7 +74,7 @@ def perform_get_command(object_name):
     game_object = get_game_object(object_name)
     
     if not (game_object is None):
-        if (game_object.location != current_location):
+        if (game_object.location != current_location or game_object.visible == False):
             print_to_description("You don't see one of those here!")
         elif (game_object.movable == False):
             print_to_description("You can't pick it up!")
@@ -248,24 +243,6 @@ def get_location_to_west():
         return 3
     else:
         return 0
-
-def handle_special_condition():
-    
-    global end_of_game
-    
-    if (False):
-        print_to_description("GAME OVER")
-        end_of_game = True
-
-def print_to_description(output, user_input=False):
-    description_widget.config(state = 'normal')
-    description_widget.insert(END, output)
-    if (user_input):
-        description_widget.tag_add("blue_text", CURRENT + " linestart", END + "-1c")
-        description_widget.tag_configure("blue_text", foreground = 'blue')
-    description_widget.insert(END, '\n')        
-    description_widget.config(state = 'disabled')
-    description_widget.see(END)
         
 def get_game_object(object_name):
     sought_object = None
@@ -303,7 +280,25 @@ def describe_current_inventory():
     inventory_widget.delete(1.0, END)
     inventory_widget.insert(1.0, inventory)
     inventory_widget.config(state = "disabled")
-             
+
+def handle_special_condition():
+    
+    global end_of_game
+    
+    if (False):
+        print_to_description("GAME OVER")
+        end_of_game = True
+
+def print_to_description(output, user_input=False):
+    description_widget.config(state = 'normal')
+    description_widget.insert(END, output)
+    if (user_input):
+        description_widget.tag_add("blue_text", CURRENT + " linestart", END + "-1c")
+        description_widget.tag_configure("blue_text", foreground = 'blue')
+    description_widget.insert(END, '\n')        
+    description_widget.config(state = 'disabled')
+    description_widget.see(END)
+
 def build_interface():
     
     global command_widget
@@ -369,8 +364,9 @@ def set_current_state():
     if (refresh_location or refresh_objects_visible):
         describe_current_visible_objects()
 
-    handle_special_condition()    
-    set_directions_to_move()                
+    handle_special_condition()
+    set_directions_to_move()            
+
     if (end_of_game == False):
         describe_current_inventory()
     
@@ -378,7 +374,6 @@ def set_current_state():
     refresh_objects_visible = False
     
     command_widget.config(state = ("disabled" if end_of_game else "normal"))
-
 
 def north_button_click():
     print_to_description("N", True)
@@ -423,7 +418,7 @@ def set_directions_to_move():
     north_button.config(state = ("normal" if move_to_north else "disabled"))
     south_button.config(state = ("normal" if move_to_south else "disabled"))
     east_button.config(state = ("normal" if move_to_east else "disabled"))
-    west_button.config(state = ("normal" if move_to_west else "disabled"))    
+    west_button.config(state = ("normal" if move_to_west else "disabled"))
 
 def main():
     
