@@ -3,6 +3,11 @@ from tkinter import ttk
 from tkinter import simpledialog
 import GameObject
 
+FIRST_LOCATION = 1
+SECOND_LOCATION = 2
+THIRD_LOCATION = 3
+FOURTH_LOCATION = 4
+
 command_widget = None
 image_label = None
 description_widget = None
@@ -16,10 +21,10 @@ root = None
 refresh_location = True
 refresh_objects_visible = True
 
-current_location = 1
+current_location = FIRST_LOCATION
 end_of_game = False
 
-generic_object = GameObject.GameObject("object", 1, True, True, False, "description")
+generic_object = GameObject.GameObject("object", FIRST_LOCATION, True, True, False, "description")
 
 game_objects = [generic_object]
 
@@ -181,26 +186,26 @@ def perform_open_command(object_name):
                 
 def describe_current_location():
         
-    if (current_location == 1):
+    if (current_location == FIRST_LOCATION):
         print_to_description("location 1")
-    elif (current_location == 2):
+    elif (current_location == SECOND_LOCATION):
         print_to_description("location 2")
-    elif (current_location == 3):
+    elif (current_location == THIRD_LOCATION):
         print_to_description("location 3")
-    elif (current_location == 4):
+    elif (current_location == FOURTH_LOCATION):
         print_to_description("location 4")
     else:
         print_to_description("unknown location:" + current_location)
 
 def set_current_image():
     
-    if (current_location == 1):
+    if (current_location == FIRST_LOCATION):
         image_label.img = PhotoImage(file = 'res/blank-1.gif')
-    elif (current_location == 2):
+    elif (current_location == SECOND_LOCATION):
         image_label.img = PhotoImage(file = 'res/blank-2.gif')
-    elif (current_location == 3):
+    elif (current_location == THIRD_LOCATION):
         image_label.img = PhotoImage(file = 'res/blank-3.gif')
-    elif (current_location == 4):
+    elif (current_location == FOURTH_LOCATION):
         image_label.img = PhotoImage(file = 'res/blank-4.gif')
     else:
         image_label.img = PhotoImage(file = 'res/blank-1.gif')
@@ -210,37 +215,37 @@ def set_current_image():
 
 def get_location_to_north():
     
-    if (current_location == 3):
-        return 1
-    elif (current_location == 4):
-        return 2
+    if (current_location == THIRD_LOCATION):
+        return FIRST_LOCATION
+    elif (current_location == FOURTH_LOCATION):
+        return SECOND_LOCATION
     else:
         return 0
 
 def get_location_to_south():
     
-    if (current_location == 1):
-        return 3
-    elif (current_location == 2):
-        return 4
+    if (current_location == FIRST_LOCATION):
+        return THIRD_LOCATION
+    elif (current_location == SECOND_LOCATION):
+        return FOURTH_LOCATION
     else:
         return 0
 
 def get_location_to_east():
     
-    if (current_location == 1):
-        return 2
-    elif (current_location == 3):
-        return 4
+    if (current_location == FIRST_LOCATION):
+        return SECOND_LOCATION
+    elif (current_location == THIRD_LOCATION):
+        return FOURTH_LOCATION
     else:
         return 0
 
 def get_location_to_west():
     
-    if (current_location == 2):
-        return 1
-    elif (current_location == 4):
-        return 3
+    if (current_location == SECOND_LOCATION):
+        return FIRST_LOCATION
+    elif (current_location == FOURTH_LOCATION):
+        return THIRD_LOCATION
     else:
         return 0
         
