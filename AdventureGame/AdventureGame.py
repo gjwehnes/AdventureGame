@@ -3,6 +3,8 @@ from tkinter import ttk
 from tkinter import simpledialog
 import GameObject
 
+PORTRAIT_LAYOUT = True
+
 FIRST_LOCATION = 1
 SECOND_LOCATION = 2
 THIRD_LOCATION = 3
@@ -322,21 +324,33 @@ def build_interface():
     style = ttk.Style()
     style.configure("BW.TLabel", foreground="black", background="white")
 
-    image_label = ttk.Label(root)    
-    image_label.grid(row=0, column=0, columnspan =3,padx = 2, pady = 2)
+    image_label = ttk.Label(root)
+    if (PORTRAIT_LAYOUT):
+        image_label.grid(row=0, column=0, columnspan =3,padx = 2, pady = 2)
+    else:
+        image_label.grid(row=0, column=0, rowspan=3, columnspan=1,padx = 2, pady = 2)
 
-    description_widget = Text(root, width =50, height = 10, relief = GROOVE, wrap = 'word')
-    description_widget.insert(1.0, "Welcome to my game\n\nGood Luck!. ")
+    description_widget = Text(root, width =60, height = 10, relief = GROOVE, wrap = 'word')
+    description_widget.insert(1.0, "Welcome to my game.\n\nGood Luck!\n\n ")
     description_widget.config(state = "disabled")
-    description_widget.grid(row=1, column=0, columnspan =3, sticky=W, padx = 2, pady = 2)
+    if (PORTRAIT_LAYOUT):
+        description_widget.grid(row=1, column=0, columnspan=3, sticky=W, padx=2, pady =2)
+    else:
+        description_widget.grid(row=0, column=1, rowspan=1, columnspan=2, padx=2, pady =2)
 
-    command_widget = ttk.Entry(root, width = 25, style="BW.TLabel")
+    command_widget = ttk.Entry(root, width = (25 if PORTRAIT_LAYOUT else 54), style="BW.TLabel")
     command_widget.bind('<Return>', return_key_enter)
-    command_widget.grid(row=2, column=0, padx = 2, pady = 2)
+    if (PORTRAIT_LAYOUT):
+        command_widget.grid(row=2, column=0, padx = 2, pady = 2)
+    else:
+        command_widget.grid(row=1, column=1, rowspan=1, columnspan=2)
     
     button_frame = ttk.Frame(root)
     button_frame.config(height = 150, width = 150, relief = GROOVE)
-    button_frame.grid(row=3, column=0, columnspan =1, padx = 2, pady = 2)
+    if (PORTRAIT_LAYOUT):
+        button_frame.grid(row=3, column=0, columnspan =1, padx = 2, pady = 2)
+    else:
+        button_frame.grid(row=2, column=1, columnspan =1, padx = 2, pady = 2)
 
     north_button = ttk.Button(button_frame, text = "N", width = 5)
     north_button.grid(row=0, column=1, padx = 2, pady = 2)
@@ -354,8 +368,11 @@ def build_interface():
     west_button.grid(row=1, column=0, padx = 2, pady = 2)
     west_button.config(command = west_button_click)
     
-    inventory_widget = Text(root, width = 30, height = 8, relief = GROOVE , state=DISABLED )
-    inventory_widget.grid(row=2, column=2, rowspan = 2, padx = 2, pady = 2,sticky=W)
+    inventory_widget = Text(root, width = (30 if PORTRAIT_LAYOUT else 38), height = (8 if PORTRAIT_LAYOUT else 6), relief = GROOVE , state=DISABLED )
+    if (PORTRAIT_LAYOUT):
+        inventory_widget.grid(row=2, column=2, rowspan = 2, padx = 2, pady = 2,sticky=W)
+    else:
+        inventory_widget.grid(row=2, column=2, rowspan = 2, padx = 2, pady = 2,sticky=W)
     
 def set_current_state():
 
