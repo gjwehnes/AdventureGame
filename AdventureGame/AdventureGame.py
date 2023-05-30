@@ -442,6 +442,25 @@ def set_directions_to_move():
     east_button.config(state = ("normal" if move_to_east else "disabled"))
     west_button.config(state = ("normal" if move_to_west else "disabled"))
 
+def play_audio(filename, asynchronous = True, loop = True):
+
+    import platform
+    operating_system = platform.system()
+
+    if (operating_system == 'Linux'):
+        from replit import audio
+        sound = audio.play_file(filename)
+        sound = audio.play_file('res/cold-moon.wav')
+        sound.paused = False
+        #according to documentation, setting .set_loop to -1 should create infinite loop in replit. Can't get it to work
+        sound.set_loop(-1)
+    elif (operating_system == 'Windows'):  
+        import winsound
+        winsound.PlaySound(filename,winsound.SND_FILENAME + \
+                           (winsound.SND_ASYNC if asynchronous else 0)  + \
+                           (winsound.SND_LOOP if loop else 0)
+                           )
+    
 def main():
     
     build_interface()
